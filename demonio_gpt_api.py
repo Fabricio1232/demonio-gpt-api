@@ -4,7 +4,6 @@ import openai
 
 app = Flask(__name__)
 
-# Configure sua API key do OpenAI aqui
 openai.api_key = "SUA_API_KEY_AQUI"
 
 def gerar_resposta_gpt(prompt):
