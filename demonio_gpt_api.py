@@ -79,6 +79,54 @@ def sessao_autoestripacao():
     pergunta, comentario = respostas.get(etapa, ("Sessão concluída.", "Você sangrou o suficiente — por hoje."))
     return jsonify({"etapa": etapa, "pergunta": pergunta, "comentario_sombrio": comentario})
 
+@app.route("/fase_1", methods=["GET"])
+def fase_1():
+    return jsonify({
+        "fase": "Diagnóstico Inicial",
+        "endpoints": [
+            {"path": "/rasgar_tipo", "uso": "Análise estrutural (MBTI, Eneagrama, distorções)"},
+            {"path": "/diagnosticar_defesa", "uso": "Mapeamento de defesas do ego"},
+            {"path": "/interpretar_sonho", "uso": "Leitura simbólica inconsciente via sonhos"}
+        ]
+    })
+
+@app.route("/fase_2", methods=["GET"])
+def fase_2():
+    return jsonify({
+        "fase": "Confronto Arquetípico",
+        "endpoints": [
+            {"path": "/encarar_sombra", "uso": "Exposição do arquétipo sombrio"},
+            {"path": "/detectar_complexo", "uso": "Detecção de complexos familiares ou traumáticos"},
+            {"path": "/crucificar_ego", "uso": "Demolição das defesas narrativas egóicas"}
+        ]
+    })
+
+@app.route("/fase_3", methods=["GET"])
+def fase_3():
+    return jsonify({
+        "fase": "Memória Psíquica e Trajetória",
+        "endpoints": [
+            {"path": "/mapear_trajetoria", "uso": "Diagnóstico simbólico da fase atual da alma"}
+        ]
+    })
+
+@app.route("/fase_4", methods=["GET"])
+def fase_4():
+    return jsonify({
+        "fase": "Dashboard do Inferno",
+        "descricao": "Painel simbólico do estado psíquico (em construção)."
+    })
+
+@app.route("/fase_5", methods=["GET"])
+def fase_5():
+    return jsonify({
+        "fase": "Sessões Terapêuticas Ativas",
+        "endpoints": [
+            {"path": "/sessao_autoestripacao", "uso": "Roteiro brutal de autoconfronto guiado"}
+        ]
+    })
+
+
 @app.route("/", methods=["GET"])
 def home():
     return "Dêmonio GPT API está viva."
