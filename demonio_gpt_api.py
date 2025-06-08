@@ -4,7 +4,7 @@ import openai
 
 app = Flask(__name__)
 
-openai.api_key = "SUA_API_KEY_AQUI"
+openai.api_key = "sk-proj-QHGTmJ2dLAENRkZMUuRLpURIfbOOyv4ZH6NufUbtKhTa207Doq615fCmljakHc5XQtx5pms-WlT3BlbkFJgI2jv2HijLxEZVK4e3OQtifJIWZwjjJxVVXoY2eQ3on1B0KZbSE5AUxUk"
 
 def gerar_resposta_gpt(prompt):
     response = openai.ChatCompletion.create(
