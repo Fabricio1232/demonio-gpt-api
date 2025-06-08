@@ -1,78 +1,70 @@
 
 from flask import Flask, request, jsonify
+import openai
 
 app = Flask(__name__)
 
-@app.route("/interpretar_sonho", methods=["POST"])
-def interpretar_sonho():
-    data = request.json
-    return jsonify({
-        "arquétipos": ["Sombra", "Anima", "Herói"],
-        "símbolos": {
-            "cobra": "Transformação e libido reprimida",
-            "casa antiga": "Estado psíquico ancestral"
-        },
-        "análise": "Você está sendo chamado a encarar aspectos negados de si mesmo que estão amadurecendo no inconsciente."
-    })
+# Configure sua API key do OpenAI aqui
+openai.api_key = "SUA_API_KEY_AQUI"
 
-@app.route("/diagnosticar_defesa", methods=["POST"])
-def diagnosticar_defesa():
-    data = request.json
-    return jsonify({
-        "defesas_identificadas": ["Projeção", "Intelectualização", "Idealização"],
-        "nível_de_maturidade": "Neurótica",
-        "interpretação": "Você está tentando se distanciar da dor real racionalizando e projetando a fraqueza em terceiros."
-    })
+def gerar_resposta_gpt(prompt):
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "Você é um analista psíquico brutalmente honesto, especializado em MBTI, Eneagrama, funções cognitivas, distorções internas, psicologia analítica e mecanismos de defesa. Use linguagem direta, provocativa e simbólica para interpretar os dados do usuário."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response.choices[0].message["content"]
 
 @app.route("/rasgar_tipo", methods=["POST"])
 def rasgar_tipo():
     data = request.json
-    return jsonify({
-        "mbti": "INFJ",
-        "eneagrama": "4w5 sx/sp",
-        "funções_dominantes": ["Ni", "Fe"],
-        "distorções": [
-            "Martírio simbólico",
-            "Autoimagem inflada e autodepreciativa",
-            "Vício em significância"
-        ]
-    })
+    prompt = f"Comportamentos: {data['comportamentos']}\nCrenças: {data['crenças']}\nReações emocionais: {data['reações_emocionais']}\nAnalise brutalmente o MBTI, Eneagrama, funções dominantes e distorções internas com base nesses dados."
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
+
+@app.route("/interpretar_sonho", methods=["POST"])
+def interpretar_sonho():
+    data = request.json
+    prompt = f"Interprete simbolicamente este sonho usando psicologia junguiana: {data['sonho']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
+
+@app.route("/diagnosticar_defesa", methods=["POST"])
+def diagnosticar_defesa():
+    data = request.json
+    prompt = f"Analise esta fala e identifique os mecanismos de defesa ativos, o nível de maturidade e a interpretação simbólica: {data['fala']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
 
 @app.route("/encarar_sombra", methods=["POST"])
 def encarar_sombra():
     data = request.json
-    return jsonify({
-        "arquétipo_sombrio": "Covarde Invisível",
-        "motivação_inconsciente": "Evitar julgamento ao custo da autenticidade",
-        "consequência_na_realidade": "Autoanulação e relações superficiais"
-    })
+    prompt = f"Com base nesta descrição, exponha o arquétipo sombrio dominante, a motivação inconsciente e a consequência na realidade: {data['descricao']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
 
 @app.route("/detectar_complexo", methods=["POST"])
 def detectar_complexo():
     data = request.json
-    return jsonify({
-        "complexo": "Complexo do Filho Rejeitado",
-        "origem": "Pai ausente e mãe controladora",
-        "efeito_sistêmico": "Busca incessante por aprovação e sabotagem de autoridade"
-    })
+    prompt = f"Com base nesse relato, detecte o complexo psicológico dominante, a origem simbólica e o efeito sistêmico: {data['relato']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
 
 @app.route("/crucificar_ego", methods=["POST"])
 def crucificar_ego():
     data = request.json
-    return jsonify({
-        "narrativa_defensiva": "Eu terminei o relacionamento porque sou racional demais",
-        "verdade_subjacente": "Você fugiu do vínculo quando foi desafiado emocionalmente",
-        "ponto_cego_exposto": "Medo de vulnerabilidade disfarçado de lógica"
-    })
+    prompt = f"Analise essa narrativa e exponha a mentira defensiva, a verdade subjacente e o ponto cego: {data['narrativa']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
 
 @app.route("/mapear_trajetoria", methods=["POST"])
 def mapear_trajetoria():
     data = request.json
-    return jsonify({
-        "fase_atual": "Travessia do deserto",
-        "arquétipo_dominante": "Ermitão",
-        "possível_quebra": "Ressurgimento da Sombra reprimida e colapso do autocontrole"
-    })
+    prompt = f"Com base nesse estágio psíquico, identifique a fase simbólica atual, o arquétipo dominante e o risco iminente: {data['fase']}"
+    resposta = gerar_resposta_gpt(prompt)
+    return jsonify({"analise": resposta})
 
 @app.route("/sessao_autoestripacao", methods=["POST"])
 def sessao_autoestripacao():
@@ -86,11 +78,7 @@ def sessao_autoestripacao():
         5: ("Qual parte de você morre se isso for retirado?", "Chegou a hora do funeral.")
     }
     pergunta, comentario = respostas.get(etapa, ("Sessão concluída.", "Você sangrou o suficiente — por hoje."))
-    return jsonify({
-        "etapa": etapa,
-        "pergunta": pergunta,
-        "comentario_sombrio": comentario
-    })
+    return jsonify({"etapa": etapa, "pergunta": pergunta, "comentario_sombrio": comentario})
 
 @app.route("/", methods=["GET"])
 def home():
